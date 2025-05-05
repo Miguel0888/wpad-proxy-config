@@ -6,7 +6,7 @@ function Get-Tokens {
         '(?<WHITESPACE>\s+)',
         '(?<KEYWORD>\b(?:function|var|return|if)\b)',
         '(?<IDENTIFIER>[a-zA-Z_][a-zA-Z0-9_]*)',
-        '(?<STRING>"[^"]*"|'[^']*')',
+        '(?<STRING>"[^"]*"|''[^'']*'')',
         '(?<NUMBER>\d+)',
         '(?<OPERATOR>[=;(){}])'
     ) -join '|'
