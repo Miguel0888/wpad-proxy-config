@@ -1,34 +1,38 @@
 # wpad-proxy-config
 
-A lightweight PowerShell toolkit to automatically configure Git and Gradle proxy settings on Windows using WPAD/PAC.
+A lightweight PowerShell toolkit to automatically configure Git (and optionally Gradle) proxy settings on Windows using WPAD/PAC.
 
 ## 🔍 Features
 
 - Reads PAC URL from the Windows registry
 - Downloads and parses PAC file using PowerShell (supports `var xyz = "PROXY ..."` and `return xyz`)
-- Sets Git proxy settings (`http.proxy` / `https.proxy`) automatically
+- Simulates a simplified `FindProxyForURL()` to extract proxy
+- Automatically sets Git proxy settings (`http.proxy` / `https.proxy`)
+- Includes test and reset helpers
 - Optional debug output
 - No dependencies: **no Node.js**, **no WSH**, **no admin rights**
 
 ## ⚙️ Usage
 
-### Configure Git proxy:
+### 1. Configure Git proxy:
 
 ```powershell
 .\configure-git-proxy.ps1
 ```
 
-### With optional debug output:
-
-Edit `configure-git-proxy.ps1`:
+Optional: enable debug mode by setting at the top of the script:
 
 ```powershell
 $DebugEnabled = $true
 ```
 
-Then run as usual.
+### 2. Test connectivity to GitHub:
 
-### Reset Git proxy:
+```powershell
+.	est-git-proxy.ps1
+```
+
+### 3. Reset Git proxy settings:
 
 ```powershell
 .eset-git-proxy.ps1
@@ -38,11 +42,11 @@ Then run as usual.
 
 | File                     | Description |
 |--------------------------|-------------|
-| `get-wpad-url.ps1`       | Reads PAC URL from registry (`AutoConfigURL`) |
-| `parse-pac.ps1`          | Parses the PAC file and extracts proxy |
-| `configure-git-proxy.ps1`| Sets Git proxy based on PAC |
-| `reset-git-proxy.ps1`    | Unsets any Git proxy settings |
-| `test-git-proxy.ps1`     | (optional) Tests Git connectivity via current proxy |
+| `get-wpad-url.ps1`       | Reads PAC URL from Windows registry (`AutoConfigURL`) |
+| `parse-pac.ps1`          | Downloads and parses the PAC file, extracts the proxy |
+| `configure-git-proxy.ps1`| Main entry: combines everything to configure Git proxy |
+| `reset-git-proxy.ps1`    | Clears Git proxy settings |
+| `test-git-proxy.ps1`     | Tests GitHub connectivity using current Git proxy |
 
 ## 📦 Requirements
 
@@ -54,6 +58,6 @@ Then run as usual.
 
 ```
 [INFO] Using PAC from http://wpad.company.local/wpad.dat
-[INFO] Set Git-Proxy to http://proxy.company.local:3128
-[SUCCESS] Git proxy successfully configured.
+[INFO] Setting Git proxy to http://proxy.company.local:3128
+[SUCCESS] Git proxy configured successfully.
 ```
